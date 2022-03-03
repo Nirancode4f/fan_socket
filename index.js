@@ -1,6 +1,6 @@
 const io = require("socket.io")(8900, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3001"
   },
 });
 
@@ -11,6 +11,7 @@ const addUser = (userId, socketId) => {
     users.push({ userId, socketId });
 };
 
+// this is remove user from socket
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
@@ -21,8 +22,10 @@ const getUser = (userId) => {
 
 io.on("connection", (socket) => {
   //when ceonnect
-  console.log("a user connected.");
+  console.log("a user connected.", socket);
 
+
+  
   //take userId and socketId from user
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
@@ -37,6 +40,10 @@ io.on("connection", (socket) => {
       text,
     });
   });
+
+
+
+  
 
   //when disconnect
   socket.on("disconnect", () => {
